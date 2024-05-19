@@ -10,9 +10,21 @@ services:
       - ${APP_PORT}:${APP_PORT}
     command: gunicorn --bind :${APP_PORT} --workers 1 app.main:app --worker-class uvicorn.workers.UvicornWorker --preload --timeout 120
     env_file:
-      - ./.env
+      - .env
     depends_on:
       - postgres
+
+  generate-api:
+    hostname: generate-api
+    container_name: generate-api
+    image: generate-api
+    restart: always
+    build: .
+    ports:
+      - ${APP_PORT_GENERATE}:${APP_PORT_GENERATE}
+    command: gunicorn --bind :${APP_PORT_GENERATE} --workers 1 app.main_generator:app --worker-class uvicorn.workers.UvicornWorker --preload --timeout 120
+    env_file:
+      - .env
 
   postgres:
     image: postgres:14.4
@@ -28,19 +40,11 @@ services:
     volumes:
       - postgres-db:/var/lib/postgresql/data
 
-  pgadmin:
-    image: chorss/docker-pgadmin4
-    restart: always
-    ports:
-      - 127.0.0.1:5050:5050
-    depends_on:
-      - postgres
-
   worker:
     image: dialog-api
     command: celery worker --app=app.services.worker_svc -l info -Q default
     env_file:
-      - ./.env
+      - .env
     depends_on:
       - dialog-api
       - redis
@@ -58,7 +62,7 @@ services:
     ports:
       - ${FLOWER_PORT}:${FLOWER_PORT}
     env_file:
-      - ./.env
+      - .env
     depends_on:
       - redis
       - worker

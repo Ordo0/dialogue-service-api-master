@@ -6,7 +6,7 @@ from fastapi.routing import APIRoute
 from starlette.requests import Request
 from starlette.responses import Response
 
-from app.api.api_v1.endpoints import auth, dialog, healthcheck, users
+from app.api.api_v1.endpoints import auth, dialog, healthcheck, users, image
 from app.utils.app_logger import app_logger
 
 
@@ -50,3 +50,7 @@ api_router.include_router(
     prefix="/healthcheck",
     tags=["Healthcheck"],
 )
+api_router.include_router(
+    image.router,
+    prefix="/image",
+    tags=["Image"])

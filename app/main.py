@@ -79,7 +79,6 @@ def homepage():
 
 # Routes
 app.include_router(api_router, prefix=settings.API_V1_STR)
-app.include_router(api_router, prefix=settings.API_V2_STR)
 
 app.add_middleware(SessionMiddleware, secret_key=settings.SECRET_KEY)
 

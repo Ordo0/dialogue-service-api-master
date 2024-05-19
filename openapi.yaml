@@ -531,6 +531,50 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
       security:
       - OAuth2PasswordBearer: []
+  /api/v1/image/generate_image:
+    post:
+      tags:
+        - Image
+      summary: Create a new generated image
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                image_name:
+                  type: string
+                  description: The name of the image to be generated.
+                image_resolution:
+                  type: string
+                  description: The resolution of the image to be generated.
+                  nullable: true
+                image_format:
+                  type: string
+                  description: The format of the image to be generated.
+                additional_params:
+                  type: object
+                  description: Any additional params to be used when generating the image.
+                  nullable: true
+      responses:
+        '200':
+          description: Image successfully generated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  image_id:
+                    type: string
+                    description: The ID of the generated image
+        '400':
+          description: Invalid input received
+        '503':
+          description: Image Microservice is currently unavailable.
 components:
   schemas:
     Body_login_api_v1_auth_sign_in_post:

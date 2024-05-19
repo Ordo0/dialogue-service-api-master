@@ -26,6 +26,7 @@ class Settings(BaseSettings):
 
     # openai
     OPENAI_URL: str
+    GENERATE_IMAGE_URL: str
     OPENAI_TOKEN: str
 
     # Celery
@@ -41,6 +42,9 @@ class Settings(BaseSettings):
     POSTGRES_DB: str
 
     SQLALCHEMY_DATABASE_URI: PostgresDsn | None = None
+
+    # The URL of the image generation service
+    IMAGE_MICROSERVICE_URL: str
 
     @validator("SQLALCHEMY_DATABASE_URI", pre=True)
     def assemble_db_connection(cls, v: str | None, values: dict[str, Any]) -> Any:
